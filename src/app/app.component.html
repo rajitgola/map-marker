@@ -1,0 +1,96 @@
+<!-- <div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+</div>
+<h2>Here are some links to help you start: </h2>
+<ul>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+  </li>
+</ul> -->
+
+
+<!-- <section>
+    <agm-map [latitude]="lat" [longitude]="lng">
+        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>  
+</section> -->
+
+<!-- <p class="card-text">{{ location$ | async }}</p> -->
+<section id="mainContent">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Hotel Search</h1>
+            <p class="lead">Search Different hotels in one place.</p>
+            <div>
+                <form class="form-inline">
+                    <div class="form-group mr-2 mb-2">
+                        <input type="text" class="form-control" id="searchName" placeholder="Search By Name">
+                    </div>
+                    <button type="button" class="btn btn-primary mb-2">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <section class="container-fluid">
+        <section class="row">
+
+            <section class="col-8 row" *ngIf="location$ | async as locationObservable">
+                <section class="card col-5 mt-2 mr-2" *ngFor="let loc of locationObservable"
+                    (click)="toggleMarker(loc?.id)">
+                    <img src="{{loc?.mainPhotoUrl}}" class="card-img-top" alt="{{loc?.name}}"
+                        (error) ="onImgError($event)">
+                    <div class="card-body">
+                        <h5 class="card-title">{{loc?.name}}</h5>
+                        <p class="card-text">
+                            {{loc?.city}} {{loc?.countryFullName}}
+                        </p>
+                        <p class="card-text">
+                            From : ${{loc?.ratePerHour}}
+                            <br>
+                            Participants : {{loc?.maxParticipants}}
+                        </p>
+                    </div>
+                </section>
+            </section>
+
+            <section class="col-4">
+                <section *ngIf="location$ | async as locationObservable">
+                    <section>
+                        <agm-map 
+                            [latitude]="locationObservable[0]?.lat" 
+                            [longitude]="locationObservable[0]?.lon"
+                            [zoom]="zoom"
+                            [disableDefaultUI]="true"
+                            [zoomControl]="false"
+                            (mapClick)="mapClicked($event)">
+                            <agm-marker 
+                                *ngFor="let loc of locationObservable ; let i = index"
+                                [latitude]="loc?.lat" 
+                                [iconUrl] = "getIconUrl(loc?.id)"
+                                (markerClick)="toggleMarker(loc?.id)"
+                                [longitude]="loc?.lon">
+                                
+                            </agm-marker>
+                        </agm-map>  
+                    </section>
+                </section>
+            </section>
+
+        </section>
+    </section>
+</section>
+
+
+<router-outlet></router-outlet>
